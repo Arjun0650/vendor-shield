@@ -1,9 +1,9 @@
 import { useRef, useState } from "react";
 import {
-  UploadCloud,
+  CloudUpload,
   FileSpreadsheet,
   X,
-  CheckCircle2,
+  CircleCheck,
   AlertCircle,
 } from "lucide-react";
 
@@ -209,7 +209,7 @@ export default function UploadZone({
               : "bg-blue-50 text-blue-600 group-hover:scale-105",
           ].join(" ")}
         >
-          <UploadCloud size={27} strokeWidth={1.8} />
+          <CloudUpload size={27} strokeWidth={1.8} />
         </div>
 
         <h3 className="mt-5 text-sm font-bold text-slate-900">
@@ -328,7 +328,7 @@ export default function UploadZone({
                     {item.name}
                   </p>
 
-                  <CheckCircle2
+                  <CircleCheck
                     size={13}
                     className="shrink-0 text-emerald-500"
                   />

@@ -1,10 +1,10 @@
 import { getDashboard } from "../services/api";
 import { useEffect, useState } from "react";
 import {
-  AlertTriangle,
+  TriangleAlert,
   ArrowRight,
   Building2,
-  CheckCircle2,
+  CircleCheck,
   Clock3,
   CreditCard,
   Database,
@@ -590,7 +590,7 @@ export default function Dashboard() {
       <div className="flex flex-col justify-between gap-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 sm:flex-row sm:items-center">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100">
-            <CheckCircle2
+            <CircleCheck
               size={20}
               className="text-emerald-600"
             />
@@ -930,7 +930,7 @@ export default function Dashboard() {
       {/* Signal cards */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="flex items-start gap-3 rounded-xl border border-red-100 bg-red-50/50 p-4">
-          <AlertTriangle
+          <TriangleAlert
             size={17}
             className="mt-0.5 shrink-0 text-red-500"
           />

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
-  CheckCircle2,
+  CircleCheck,
   FileSearch,
   ShieldAlert,
 } from "lucide-react";
@@ -185,7 +185,7 @@ export default function Investigation() {
           {timeline.map((item, index) => (
             <div key={index} className="flex gap-3">
               <div className="mt-0.5">
-                <CheckCircle2 size={16} className="text-blue-600" />
+                <CircleCheck size={16} className="text-blue-600" />
               </div>
 
               <div>

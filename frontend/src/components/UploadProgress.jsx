@@ -1,5 +1,5 @@
 import {
-  CheckCircle2,
+  CircleCheck,
   Circle,
   Loader2,
   Sparkles,
@@ -95,7 +95,7 @@ export default function UploadProgress({
                 className="flex items-center gap-3"
               >
                 {completed ? (
-                  <CheckCircle2
+                  <CircleCheck
                     size={17}
                     className="shrink-0 text-emerald-500"
                   />

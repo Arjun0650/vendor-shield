@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { CheckCircle2, Clock3, FileText, Shield } from "lucide-react";
+import { CircleCheck, Clock3, FileText, Shield } from "lucide-react";
 import { getAuditLogs } from "../services/api";
 
 export default function AuditTrail() {
@@ -83,7 +83,7 @@ export default function AuditTrail() {
               <div key={log.id || index} className="flex gap-4">
                 <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600">
                   {action.toLowerCase().includes("approve") ? (
-                    <CheckCircle2 size={16} />
+                    <CircleCheck size={16} />
                   ) : (
                     <FileText size={16} />
                   )}

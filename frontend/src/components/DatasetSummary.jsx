@@ -1,9 +1,9 @@
 import {
   ArrowRight,
-  CheckCircle2,
+  CircleCheck,
   Database,
   FileSpreadsheet,
-  AlertTriangle,
+  TriangleAlert,
   Rows3,
 } from "lucide-react";
 
@@ -22,9 +22,9 @@ function ValidationPill({ valid }) {
       ].join(" ")}
     >
       {valid ? (
-        <CheckCircle2 size={10} />
+        <CircleCheck size={10} />
       ) : (
-        <AlertTriangle size={10} />
+        <TriangleAlert size={10} />
       )}
 
       {valid ? "VALID" : "CHECK"}
@@ -78,9 +78,9 @@ export default function DatasetSummary({
             ].join(" ")}
           >
             {allValid ? (
-              <CheckCircle2 size={12} />
+              <CircleCheck size={12} />
             ) : (
-              <AlertTriangle size={12} />
+              <TriangleAlert size={12} />
             )}
 
             {allValid ? "VALIDATED" : "REVIEW REQUIRED"}
