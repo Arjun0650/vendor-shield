@@ -121,5 +121,5 @@ def get_dashboard_data(session: Session = Depends(get_db)):
             {"name": "High", "value": risk_counts["HIGH"]},
             {"name": "Critical", "value": risk_counts["CRITICAL"]}
         ],
-        "criticalVendors": top_vendors_list[:4] # Take top 4 for the dashboard
-    }
+        "attentionVendors": top_vendors_list[:4] # Take top 4 for the dashboard
+    }   

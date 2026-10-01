@@ -1,7 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import upload, risk, graph, dashboard
+from .routers import (
+    upload,
+    risk,
+    graph,
+    dashboard,
+    analyse,
+    vendors,
+)
 
 
 app = FastAPI(
@@ -11,7 +18,10 @@ app = FastAPI(
 )
 
 
-# Configure CORS for the Vite/React frontend
+# ============================================================
+# CORS CONFIGURATION
+# ============================================================
+
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
@@ -30,13 +40,59 @@ app.add_middleware(
 # INCLUDE ROUTERS
 # ============================================================
 
-# The upload router defines its own prefix as "/upload".
-# The frontend api.js expects POST /api/upload.
-# Therefore, we mount it with the "/api" prefix here.
-app.include_router(upload.router, prefix="/api")
-app.include_router(dashboard.router, prefix="/api")
+# Upload
+# Final endpoint:
+# POST /api/upload
+app.include_router(
+    upload.router,
+    prefix="/api"
+)
 
-# The risk and graph routers already define their own prefix as "/api/vendors".
-# Therefore, we mount them at the root level without an additional prefix.
-app.include_router(risk.router)
-app.include_router(graph.router)
+
+# Dashboard
+# Final endpoint:
+# GET /api/dashboard
+app.include_router(
+    dashboard.router,
+    prefix="/api"
+)
+
+
+# Analysis
+# Final endpoint:
+# POST /api/analyse
+app.include_router(
+    analyse.router,
+    prefix="/api"
+)
+
+
+# Vendor Directory
+# Final endpoints:
+# GET /api/vendors
+# GET /api/vendors/{vendor_id}
+app.include_router(
+    vendors.router,
+    prefix="/api"
+)
+
+
+# Risk router already contains:
+# prefix="/api/vendors"
+#
+# Final endpoints:
+# GET /api/vendors/{vendor_id}/risk
+# GET /api/vendors/{vendor_id}/dna
+app.include_router(
+    risk.router
+)
+
+
+# Graph router already contains:
+# prefix="/api/vendors"
+#
+# Final endpoint:
+# GET /api/vendors/{vendor_id}/relationships
+app.include_router(
+    graph.router
+)

@@ -845,7 +845,7 @@ export default function Dashboard() {
               </thead>
 
               <tbody>
-                {data.criticalVendors.map(
+                {data.attentionVendors.map(
                   (vendor) => (
                     <tr
                       key={vendor.id}

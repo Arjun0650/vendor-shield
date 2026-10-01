@@ -1,101 +1,75 @@
 import axios from "axios";
 
 import {
-  mockDashboard,
-  mockVendors,
   mockApprovals,
   mockAuditLogs,
 } from "../mock/mockData";
+
 
 /*
 |--------------------------------------------------------------------------
 | Vendor Shield API configuration
 |--------------------------------------------------------------------------
 |
-| true  = frontend demo / mock data
-| false = FastAPI backend
+| REAL BACKEND:
+| - Dashboard
+| - Vendor Directory
+| - Vendor Details
+| - Vendor DNA
+| - Vendor Relationships
 |
-| This is the ONE switch needed when the backend is ready.
+| MOCK FOR NOW:
+| - Investigation
+| - Approvals
+| - Audit Logs
+| - Frontend dataset upload flow
 |
 */
 
+
 const USE_MOCK_API = true;
+
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
   "http://localhost:8000";
 
+
 const api = axios.create({
   baseURL: API_BASE_URL,
+
   headers: {
     "Content-Type": "application/json",
   },
+
   timeout: 15000,
 });
 
+
 /*
 |--------------------------------------------------------------------------
-| Dashboard
+| Dashboard - REAL BACKEND
 |--------------------------------------------------------------------------
 */
 
 export async function getDashboard() {
-  if (USE_MOCK_API) {
-    await mockDelay();
-
-    return mockDashboard;
-  }
-
-  const response =
-    await api.get("/api/dashboard");
+  const response = await api.get(
+    "/api/dashboard"
+  );
 
   return response.data;
 }
 
+
 /*
 |--------------------------------------------------------------------------
-| Vendors
+| Vendors - REAL BACKEND
 |--------------------------------------------------------------------------
 */
 
-export async function getVendors(params = {}) {
-  if (USE_MOCK_API) {
-    await mockDelay();
-
-    let result = [...mockVendors];
-
-    if (params.search) {
-      const search =
-        params.search.toLowerCase();
-
-      result = result.filter(
-        (vendor) =>
-          vendor.name
-            .toLowerCase()
-            .includes(search) ||
-          vendor.gstin
-            ?.toLowerCase()
-            .includes(search) ||
-          vendor.id
-            ?.toLowerCase()
-            .includes(search)
-      );
-    }
-
-    if (
-      params.riskLevel &&
-      params.riskLevel !== "ALL"
-    ) {
-      result = result.filter(
-        (vendor) =>
-          vendor.riskLevel ===
-          params.riskLevel
-      );
-    }
-
-    return result;
-  }
-
+export async function getVendors(
+  params = {}
+) {
   const response = await api.get(
     "/api/vendors",
     {
@@ -106,23 +80,16 @@ export async function getVendors(params = {}) {
   return response.data;
 }
 
+
 /*
 |--------------------------------------------------------------------------
-| Vendor details
+| Vendor details - REAL BACKEND
 |--------------------------------------------------------------------------
 */
 
 export async function getVendor(
   vendorId
 ) {
-  if (USE_MOCK_API) {
-    await mockDelay();
-
-    return mockVendors.find(
-      (vendor) => vendor.id === vendorId
-    );
-  }
-
   const response = await api.get(
     `/api/vendors/${vendorId}`
   );
@@ -130,21 +97,16 @@ export async function getVendor(
   return response.data;
 }
 
+
 /*
 |--------------------------------------------------------------------------
-| Vendor DNA
+| Vendor DNA - REAL BACKEND
 |--------------------------------------------------------------------------
 */
 
 export async function getVendorDNA(
   vendorId
 ) {
-  if (USE_MOCK_API) {
-    await mockDelay();
-
-    return getMockVendorDNA(vendorId);
-  }
-
   const response = await api.get(
     `/api/vendors/${vendorId}/dna`
   );
@@ -152,27 +114,23 @@ export async function getVendorDNA(
   return response.data;
 }
 
+
 /*
 |--------------------------------------------------------------------------
-| Vendor relationships
+| Vendor relationships - REAL BACKEND
 |--------------------------------------------------------------------------
 */
 
 export async function getVendorRelationships(
   vendorId
 ) {
-  if (USE_MOCK_API) {
-    await mockDelay();
-
-    return getMockRelationships(vendorId);
-  }
-
   const response = await api.get(
     `/api/vendors/${vendorId}/relationships`
   );
 
   return response.data;
 }
+
 
 /*
 |--------------------------------------------------------------------------
@@ -186,7 +144,9 @@ export async function getInvestigation(
   if (USE_MOCK_API) {
     await mockDelay();
 
-    return getMockInvestigation(vendorId);
+    return getMockInvestigation(
+      vendorId
+    );
   }
 
   const response = await api.get(
@@ -195,6 +155,7 @@ export async function getInvestigation(
 
   return response.data;
 }
+
 
 /*
 |--------------------------------------------------------------------------
@@ -209,11 +170,13 @@ export async function getApprovals() {
     return mockApprovals;
   }
 
-  const response =
-    await api.get("/api/approvals");
+  const response = await api.get(
+    "/api/approvals"
+  );
 
   return response.data;
 }
+
 
 /*
 |--------------------------------------------------------------------------
@@ -234,7 +197,9 @@ export async function takeApprovalAction(
       transactionId,
       action,
       note,
-      message: `Transaction ${action.toLowerCase()} successfully.`,
+
+      message:
+        `Transaction ${action.toLowerCase()} successfully.`,
     };
   }
 
@@ -249,6 +214,7 @@ export async function takeApprovalAction(
   return response.data;
 }
 
+
 /*
 |--------------------------------------------------------------------------
 | Audit logs
@@ -262,24 +228,25 @@ export async function getAuditLogs() {
     return mockAuditLogs;
   }
 
-  const response =
-    await api.get("/api/audit-logs");
+  const response = await api.get(
+    "/api/audit-logs"
+  );
 
   return response.data;
 }
+
 
 /*
 |--------------------------------------------------------------------------
 | CSV upload
 |--------------------------------------------------------------------------
 |
-| Backend upload endpoint is proposed as:
+| Keep this mock for now.
 |
-| POST /api/upload
+| Your current backend /api/upload endpoint loads the CSV files
+| that already exist in the backend data folder.
 |
-| Confirm this endpoint name with the backend team before
-| connecting the live API because it was not in the original
-| API contract.
+| It does not currently accept browser-uploaded multipart files.
 |
 */
 
@@ -292,18 +259,27 @@ export async function uploadDatasets(
 
     return {
       success: true,
-      message: "Datasets uploaded successfully.",
-      files: files.map((file) => ({
-        name: file.name,
-        size: file.size,
-      })),
+
+      message:
+        "Datasets uploaded successfully.",
+
+      files: files.map(
+        (file) => ({
+          name: file.name,
+          size: file.size,
+        })
+      ),
     };
   }
 
-  const formData = new FormData();
+  const formData =
+    new FormData();
 
   files.forEach((file) => {
-    formData.append("files", file);
+    formData.append(
+      "files",
+      file
+    );
   });
 
   const response = await api.post(
@@ -314,12 +290,14 @@ export async function uploadDatasets(
         "Content-Type":
           "multipart/form-data",
       },
+
       onUploadProgress,
     }
   );
 
   return response.data;
 }
+
 
 /*
 |--------------------------------------------------------------------------
@@ -330,184 +308,74 @@ export async function uploadDatasets(
 function mockDelay(
   milliseconds = 350
 ) {
-  return new Promise((resolve) =>
-    setTimeout(
-      resolve,
-      milliseconds
-    )
+  return new Promise(
+    (resolve) =>
+      setTimeout(
+        resolve,
+        milliseconds
+      )
   );
 }
 
-function getMockVendorDNA(
-  vendorId
-) {
-  const vendor =
-    mockVendors.find(
-      (item) => item.id === vendorId
-    );
 
-  return {
-    vendor,
-    identity: {
-      score: 91,
-      signals: [
-        "GSTIN verified",
-        "Name similarity detected",
-      ],
-    },
-    banking: {
-      score: 72,
-      signals: [
-        "Recent bank account change",
-        "Shared bank relationship",
-      ],
-    },
-    behaviour: {
-      score: 68,
-      signals: [
-        "High-value transaction",
-        "Unusual payment timing",
-      ],
-    },
-    relationships: {
-      score: 84,
-      signals: [
-        "Shared GSTIN",
-        "Shared bank account",
-      ],
-    },
-  };
-}
-
-function getMockRelationships(
-  vendorId
-) {
-  return {
-    nodes: [
-      {
-        id: vendorId,
-        type: "vendor",
-        data: {
-          label:
-            "ABC Industrial Pvt Ltd",
-        },
-        position: {
-          x: 300,
-          y: 180,
-        },
-      },
-      {
-        id: "bank-1",
-        type: "bank",
-        data: {
-          label:
-            "HDFC ••••9012",
-        },
-        position: {
-          x: 100,
-          y: 80,
-        },
-      },
-      {
-        id: "gstin-1",
-        type: "gstin",
-        data: {
-          label:
-            "GSTIN V-0981",
-        },
-        position: {
-          x: 100,
-          y: 280,
-        },
-      },
-      {
-        id: "vendor-1023",
-        type: "vendor",
-        data: {
-          label:
-            "Metro Components Ltd",
-        },
-        position: {
-          x: 560,
-          y: 80,
-        },
-      },
-      {
-        id: "transaction-1",
-        type: "transaction",
-        data: {
-          label:
-            "₹8.7L payment",
-        },
-        position: {
-          x: 560,
-          y: 280,
-        },
-      },
-    ],
-
-    edges: [
-      {
-        id: "e1",
-        source: vendorId,
-        target: "bank-1",
-        label: "BANK",
-      },
-      {
-        id: "e2",
-        source: vendorId,
-        target: "gstin-1",
-        label: "GSTIN",
-      },
-      {
-        id: "e3",
-        source: "bank-1",
-        target: "vendor-1023",
-        label: "SHARED",
-      },
-      {
-        id: "e4",
-        source: vendorId,
-        target: "transaction-1",
-        label: "PAYMENT",
-      },
-    ],
-  };
-}
+/*
+|--------------------------------------------------------------------------
+| Mock Investigation
+|--------------------------------------------------------------------------
+|
+| This stays mock until we create the real investigation backend route.
+|
+*/
 
 function getMockInvestigation(
   vendorId
 ) {
   return {
     vendorId,
-    riskScore: 88,
-    riskLevel: "CRITICAL",
+
+    riskScore:
+      88,
+
+    riskLevel:
+      "CRITICAL",
 
     signals: [
       {
         title:
           "Recent bank account change",
-        severity: "HIGH",
+
+        severity:
+          "HIGH",
+
         description:
           "Bank details changed shortly before a high-value payment.",
       },
+
       {
         title:
           "Shared bank relationship",
-        severity: "HIGH",
+
+        severity:
+          "HIGH",
+
         description:
           "The current bank account is also connected to another vendor.",
       },
+
       {
         title:
           "Shared GSTIN relationship",
-        severity: "MEDIUM",
+
+        severity:
+          "MEDIUM",
+
         description:
           "A matching GSTIN relationship was detected.",
       },
     ],
 
-    exposure: 870000,
+    exposure:
+      870000,
 
     aiSummary:
       "The vendor shows multiple connected risk signals. The strongest evidence is the recent banking change combined with a high-value pending payment and shared banking identity.",
@@ -517,25 +385,40 @@ function getMockInvestigation(
 
     timeline: [
       {
-        date: "20 Sep 2026",
+        date:
+          "20 Sep 2026",
+
         title:
           "₹8.7L payment initiated",
-        type: "transaction",
+
+        type:
+          "transaction",
       },
+
       {
-        date: "18 Sep 2026",
+        date:
+          "18 Sep 2026",
+
         title:
           "Bank account changed",
-        type: "change",
+
+        type:
+          "change",
       },
+
       {
-        date: "15 Sep 2026",
+        date:
+          "15 Sep 2026",
+
         title:
           "Vendor relationship detected",
-        type: "relationship",
+
+        type:
+          "relationship",
       },
     ],
   };
 }
+
 
 export default api;
