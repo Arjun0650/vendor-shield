@@ -6,27 +6,6 @@ import {
 } from "../mock/mockData";
 
 
-/*
-|--------------------------------------------------------------------------
-| Vendor Shield API configuration
-|--------------------------------------------------------------------------
-|
-| REAL BACKEND:
-| - Dashboard
-| - Vendor Directory
-| - Vendor Details
-| - Vendor DNA
-| - Vendor Relationships
-|
-| MOCK FOR NOW:
-| - Investigation
-| - Approvals
-| - Audit Logs
-| - Frontend dataset upload flow
-|
-*/
-
-
 const USE_MOCK_API = true;
 
 
@@ -42,7 +21,7 @@ const api = axios.create({
     "Content-Type": "application/json",
   },
 
-  timeout: 15000,
+  timeout: 60000,
 });
 
 
@@ -51,6 +30,15 @@ const api = axios.create({
 | Dashboard - REAL BACKEND
 |--------------------------------------------------------------------------
 */
+export async function loadBackendData() {
+  const response = await api.post("/api/upload");
+  return response.data;
+}
+
+export async function runBackendAnalysis() {
+  const response = await api.post("/api/analyse");
+  return response.data;
+}
 
 export async function getDashboard() {
   const response = await api.get(
